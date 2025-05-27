@@ -1,0 +1,87 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  background: white;
+  width: 100%;
+}
+.card{
+  margin: 47px auto 0px;
+  background:linear-gradient(100deg,#00edfe,#e16bda);
+  width: 80%;
+  max-width: 450px;
+  padding:8px 12px;
+  border-radius: 12px;
+}
+.header{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  margin: 12px 2px;
+}
+.search{
+  width: 80%;
+  height: 48px;
+  border-radius: 15px;
+  border: none;
+  padding: 0 6px;
+
+}
+button{
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  border: none;
+  
+}
+.search-btn{
+  height: 23px;
+  width: 23px;
+}
+.cloud-typ{
+  margin: 5px 23px;
+}
+.cloud{
+  margin-top: 29px;
+  margin-left: 89px;
+  width: 200px;
+}
+.temp-city{
+  margin-top: 9px;
+  text-align: center;
+}
+.temp{
+  font-size: 41px;
+}
+.city{
+  font-size: 31px;
+}
+.col{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px;
+  padding: 12px;
+}
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img{
+  width: 54px;
+}
+.wind-img{
+  width: 54px;
+}
+.humidity{
+  font-size: 21px;
+  font-weight: 500;
+}
+.wind{
+  font-size: 21px;
+  font-weight: 500;
+}
