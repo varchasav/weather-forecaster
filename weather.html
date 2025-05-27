@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> real time  Weather</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="card">
+    <div class="header">
+      <input type="text" placeholder="Enter Indian city or state" spellcheck="false" class="search">
+      <button><img src="search.jpeg" class="search-btn"></button>
+    </div>
+
+    <!-- Date & Time -->
+    <p class="datetime"></p>
+
+    <div class="body">
+      <div class="cloud-typ">
+        <img src="cloudy.jpeg" class="cloud">
+        <div class="temp-city">
+          <h1 class="temp">--°C</h1>
+          <h3 class="location">Location</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="footer">
+        <img src="humidity.jpeg" class="img">
+        <div>
+          <p class="humidity">--%</p>
+          <p>Humidity</p>
+        </div>
+      </div>
+
+      <div class="footer">
+        <img src="wind.jpeg" class="wind-img">
+        <div>
+          <p class="wind">-- km/h</p>
+          <p>Wind</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <p class="error-message"></p>
+  </div>
+
+  <script>
+    const apikey = "0e3cbe63feefcaec06437bf6b5e52b4e";
+    const apiurl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+    const searchBox = document.querySelector(".search");
+    const searchBtn = document.querySelector(".search-btn");
+    const weatherIcon = document.querySelector(".cloud");
+    const errorMessage = document.querySelector(".error-message");
+    const body = document.body;
+
+    // Function to fetch and update weather
+    async function checkWeather(location) {
+      if (!location) {
+        errorMessage.innerHTML = "⚠️ Please enter an Indian city or state!";
+        return;
+      }
+
+      try {
+        errorMessage.innerHTML = "⏳ Fetching weather...";
+        const response = await fetch(apiurl + location + ",IN&appid=" + apikey);
+        if (!response.ok) throw new Error("Location not found");
+
+        const data = await response.json();
+        document.querySelector(".location").innerHTML = data.name + ", India";
+        document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+        document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+
+        // Change weather icon and background color dynamically
+        const weatherCondition = data.weather[0].main;
+        if (weatherCondition === "Clear") {
+          weatherIcon.src = "sunny.jpeg";
+          body.style.backgroundColor = "yellow"; // Yellow
+        } else if (weatherCondition === "Rain") {
+          weatherIcon.src = "rain.jpeg";
+          body.style.backgroundColor = "#light blue"; // Light Blue
+        } else if (weatherCondition === "Clouds") {
+          weatherIcon.src = "partialy_cloudy.jpeg";
+          body.style.backgroundColor = "gray"; // Gray
+        } else if (weatherCondition === "Drizzle") {
+          weatherIcon.src = "humidity.jpeg";
+          body.style.backgroundColor = "light cyan"; // Light Cyan
+        } else if (weatherCondition === "Mist" || weatherCondition === "Fog") {
+          weatherIcon.src = "cloudy.jpeg";
+          body.style.backgroundColor = "pale blue"; // Pale Blue
+        } else {
+          body.style.backgroundColor = "default light gray"; // Default Light Gray
+        }
+
+        errorMessage.innerHTML = ""; // Clear error message after successful fetch
+      } catch (error) {
+        errorMessage.innerHTML = "❌ Location not found in India. Please try again!";
+        body.style.backgroundColor = "light pink"; // Light Pink for Error
+      }
+    }
+
+    // Function to update date and time
+    function updateDateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = now.toLocaleDateString('en-IN', options);
+      const formattedTime = now.toLocaleTimeString('en-IN');
+
+      document.querySelector(".datetime").innerHTML = `${formattedDate} - ${formattedTime}`;
+    }
+
+    // Event listeners for search button and "Enter" key
+    searchBtn.addEventListener("click", () => checkWeather(searchBox.value.trim()));
+    searchBox.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") checkWeather(searchBox.value.trim());
+    });
+
+    // Load default weather (e.g., Delhi)
+    checkWeather("Ghaziabad");
+
+    // Update date & time every second
+    setInterval(updateDateTime, 1000);
+    updateDateTime(); // Initial call
+  </script>
+
+</body>
+</html>
